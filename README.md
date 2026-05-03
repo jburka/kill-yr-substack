@@ -1,24 +1,16 @@
 # Kill Yr Substack
 
-A browser extension that redirects Substack articles to an archiving service of your choice. Works on `*.substack.com` as well as custom domains.
-
-[Why does this exist?](https://jasoncosper.com/kill-yr-substack/)
+A browser extension that automatically redirects Substack articles to an archiving service of your choice, including articles on custom domains.
 
 ## How It Works
 
-Three tiers. Each one more ruthless than the last…
+The extension uses a three-tier approach to block Substack traffic:
 
-### Tier 1: Known Substack domains
+**Tier 1: Known Substack domains.** All `*.substack.com/p/*` article URLs and `substack.com/@*` profile URLs are intercepted at the network level via `declarativeNetRequest`. The HTTP request to Substack never fires. The page never loads.
 
-All `*.substack.com/p/*` article URLs and `substack.com/@*` profile URLs get intercepted at the network level via `declarativeNetRequest`. The HTTP request never fires. The page never loads. Done.
+**Tier 2: Learned custom domains.** Once a custom domain Substack is detected (see Tier 3), the domain is cached and added as a `declarativeNetRequest` rule. Every subsequent visit to that domain is blocked at the network level, same as Tier 1. No traffic to Substack.
 
-### Tier 2: Learned custom domains
-
-Once the extension flags a custom domain as a Substack site (see Tier 3), it caches the domain name and adds a `declarativeNetRequest` rule. Every future visit to that domain gets the same network-level block as Tier 1. No traffic to Substack.
-
-### Tier 3: First-visit detection
-
-The first time you hit a Substack with a custom domain, the page has to load so the content script can sniff for platform fingerprints:
+**Tier 3: First-visit detection.** The first time you hit a custom domain Substack, the page loads so the content script can sniff for platform fingerprints:
 
 1. `<meta name="generator" content="Substack">` tag
 2. Stylesheets or assets from `substackcdn.com`
@@ -27,9 +19,9 @@ The first time you hit a Substack with a custom domain, the page has to load so 
 5. RSS feed links pointing to `substack.com`
 6. Substack-specific class names paired with subscribe forms
 
-Hit any of those and the page redirects to `archive.is`. The domain gets cached and promoted to Tier 2 for next time.
+If detected, the page redirects to archive.is and the domain is cached for future visits (promoting it to Tier 2).
 
-The popup gives you a toggle to pause/resume redirects and a list of learned custom domains. You can remove individual domains if something gets flagged incorrectly.
+The popup shows a toggle to pause/resume redirects and a list of learned custom domains. Individual domains can be removed if a false positive is cached.
 
 ## Picking Your Archive Service
 
@@ -45,38 +37,42 @@ Pick whichever option makes you feel less gross.
 
 ## Install
 
-Pre-built packages are available in the [`dist/`](dist/) directory and as [GitHub Releases](https://github.com/anticapitalistcomputerclub/kill-yr-substack/releases).
-
 ### Chrome / Chromium
 
-**From CRX:**
-1. Download `dist/kill-yr-substack.crx`
-2. Go to `chrome://extensions/`
-3. Enable **Developer mode** (top right)
-4. Drag `kill-yr-substack.crx` onto the page
-
-**From ZIP (unpacked):**
-1. Download and extract `dist/kill-yr-substack-X.Y.Z.zip`
-2. Go to `chrome://extensions/`
-3. Enable **Developer mode** (top right)
-4. Click **Load unpacked** and select the extracted folder
+**From package:**
+1. Go to `chrome://extensions/`
+2. Enable **Developer mode** (top right)
+3. Drag `kill-yr-substack.crx` onto the page
 
 **From source:**
 1. Go to `chrome://extensions/`
 2. Enable **Developer mode** (top right)
-3. Click **Load unpacked** and select this repository directory
+3. Click **Load unpacked** and select this directory
 
 ### Firefox
 
-**From XPI:**
-1. Download `dist/kill-yr-substack-X.Y.Z.xpi`
-2. Go to `about:addons`
-3. Click the gear icon, select **Install Add-on From File...**
-4. Select the downloaded XPI file
+**From package:**
+1. Go to `about:addons`
+2. Click the gear icon and select **Install Add-on From File...**
+3. Select `kill-yr-substack-X.Y.Z.xpi`
+
+**From source (temporary):**
+1. Go to `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on** and select `manifest.json`
+
+### Safari
+
+Safari requires wrapping the extension in a native app container:
+
+```
+xcrun safari-web-extension-converter /path/to/kill-yr-substack
+```
+
+This generates an Xcode project. Build and run it, then enable the extension in **Safari > Settings > Extensions**. Requires Xcode 14+ and macOS 13+.
 
 ## Permissions
 
-The extension requests `<all_urls>` because Substack sites can be assigned custom domains. The content script runs lightweight DOM queries and bails immediately on any sites that aren't Substack.
+The extension requests `<all_urls>` host permission because custom domain Substacks can live on any domain. The content script runs lightweight DOM queries and bails immediately on non-Substack pages.
 
 ## License
 

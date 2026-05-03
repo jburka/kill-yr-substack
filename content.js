@@ -11,9 +11,9 @@
 (function () {
   'use strict';
 
-  // bail if this isn't an article-shaped URL (skip homepages, asset paths, etc.)
+  // bail on asset paths (rare but cheap to skip)
   var path = window.location.pathname;
-  if (path === '/' || /\.(js|css|png|jpg|svg|woff2?|json|xml)$/i.test(path)) return;
+  if (/\.(js|css|png|jpg|svg|woff2?|json|xml)$/i.test(path)) return;
 
   chrome.storage.local.get({ enabled: true }, function (data) {
     if (!data.enabled) return;

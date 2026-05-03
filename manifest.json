@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Kill Yr Substack",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Automatically redirects Substack articles (including custom domains) to an archiving service of your choice.",
   "permissions": [
     "declarativeNetRequest",
