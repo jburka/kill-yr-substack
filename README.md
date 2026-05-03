@@ -39,36 +39,30 @@ Pick whichever option makes you feel less gross.
 
 ### Chrome / Chromium
 
-**From package:**
-1. Go to `chrome://extensions/`
-2. Enable **Developer mode** (top right)
-3. Drag `kill-yr-substack.crx` onto the page
+**From CRX:**
+1. Download `kill-yr-substack.crx`
+2. Go to `chrome://extensions/`
+3. Enable **Developer mode** (top right)
+4. Drag `kill-yr-substack.crx` onto the page
+
+**From ZIP (unpacked):**
+1. Download and extract `kill-yr-substack-X.Y.Z.zip`
+2. Go to `chrome://extensions/`
+3. Enable **Developer mode** (top right)
+4. Click **Load unpacked** and select the extracted folder
 
 **From source:**
 1. Go to `chrome://extensions/`
 2. Enable **Developer mode** (top right)
-3. Click **Load unpacked** and select this directory
+3. Click **Load unpacked** and select this repository directory
 
 ### Firefox
 
-**From package:**
-1. Go to `about:addons`
-2. Click the gear icon and select **Install Add-on From File...**
-3. Select `kill-yr-substack-X.Y.Z.xpi`
-
-**From source (temporary):**
-1. Go to `about:debugging#/runtime/this-firefox`
-2. Click **Load Temporary Add-on** and select `manifest.json`
-
-### Safari
-
-Safari requires wrapping the extension in a native app container:
-
-```
-xcrun safari-web-extension-converter /path/to/kill-yr-substack
-```
-
-This generates an Xcode project. Build and run it, then enable the extension in **Safari > Settings > Extensions**. Requires Xcode 14+ and macOS 13+.
+**From XPI:**
+1. Download `kill-yr-substack-X.Y.Z.xpi`
+2. Go to `about:addons`
+3. Click the gear icon, select **Install Add-on From File...**
+4. Select the downloaded XPI file
 
 ## Permissions
 
