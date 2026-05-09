@@ -46,13 +46,8 @@
     var rss = document.querySelector('link[type="application/rss+xml"]');
     if (rss && /substack\.com/.test(rss.getAttribute('href'))) return true;
 
-    // 6. substack-specific class on the post body
-    if (document.querySelector('.available-content, .post-content')) {
-      // only flag if there's also a substack signup form nearby
-      if (document.querySelector(
-        'form[action*="substack.com"], .subscribe-widget, [class*="subscribe-btn"]'
-      )) return true;
-    }
+    // 6. substack signup form pointing back to substack.com
+    if (document.querySelector('form[action*="substack.com"]')) return true;
 
     return false;
   }
